@@ -13,7 +13,7 @@
                                 100) / 100).toFixed(2))
                         }}</p>
 
-                        <button type="button" @click="addToCart(product.id)"
+                        <button type="button" @click="addItemToCart(product)"
                             class="inline-block px-6 py-2.5 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">Add
                             to Cart</button>
 
@@ -29,7 +29,7 @@
 
 <script>
 import axios from 'axios';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     data() {
@@ -48,24 +48,28 @@ export default {
                 console.error(error);
             }
         },
-        addToCart(product) {
-            if (this.cart.includes(product)) {
-                alert('Product already exists inside the cart.');
-            } else {
-                this.cart.push(product);
-                alert('Product added to cart.');
-            }
+        addItemToCart(product) {
+            // Use the addToCart action to commit the item to the store
+            this.addToCart(product)
         },
-        ...mapActions(['populateProductsStore']),
+        removeFromCart(product) {
+            // Use the removeFromCart action to remove the item from the store
+            this.removeFromCart(product)
+        },
+        ...mapActions(['setProducts', 'addToCart', 'removeFromCart']),
         storeArray() {
             // Store the array in the Vuex store
-            this.populateProductsStore(this.products);
+            this.setProducts(this.products);
         }
     },
     created() {
         this.getProducts();
         // export the products array
 
+    },
+    computed: {
+        // Use the items getter from the cart store to get the items in the cart
+        ...mapGetters(['items'])
     }
 }
 </script>
