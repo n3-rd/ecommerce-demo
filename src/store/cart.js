@@ -22,7 +22,14 @@ const actions = {
 }
 
 const getters = {
-    items: state => state.items
+    items: state => state.items,
+    cartTotal: state => {
+        let total = 0
+        state.items.forEach(item => {
+            total += item.price
+        })
+        return total
+    },
 }
 
 export default {
