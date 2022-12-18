@@ -50,8 +50,16 @@ export default {
             }
         },
         addItemToCart(product) {
-            // Use the addToCart action to commit the item to the store
-            this.addToCart(product)
+            // Check if the item is already in the cart
+            let itemInCart = this.items.find(item => item.id === product.id);
+
+            if (itemInCart) {
+                // Update the quantity of the existing item or display an error message
+                console.log('Item is already in the cart');
+            } else {
+                // Use the addToCart action to commit the item to the store
+                this.addToCart(product);
+            }
         },
         removeFromCart(product) {
             // Use the removeFromCart action to remove the item from the store
