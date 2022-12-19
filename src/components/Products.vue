@@ -1,5 +1,7 @@
 <template>
     <div>
+        <FailAlert ref="alert" message="Item is already in the cart" />
+        <SuccessAlert ref="success" message="Item added to cart" />
 
         <div class="py-6 px-4 text-black">
 
@@ -12,7 +14,7 @@
                         <p class="text-lg font-black product-price">${{ (parseFloat(Math.floor((product.price * 1.022) *
                                 100) / 100).toFixed(2))
                         }}</p>
-
+                        <div>{{ product.category }}</div>
                         <button type="button" @click="addItemToCart(product)"
                             class="inline-block px-6 py-2.5 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">Add
                             to Cart</button>
@@ -31,12 +33,15 @@
 <script>
 import axios from 'axios';
 import { mapActions, mapGetters } from 'vuex'
+import FailAlert from './failAlert.vue';
+import SuccessAlert from './successAlert.vue';
 
 export default {
     data() {
         return {
             products: [],
-            cart: []
+            cart: [],
+            showPrompt: false
         }
     },
     methods: {
@@ -56,9 +61,11 @@ export default {
             if (itemInCart) {
                 // Update the quantity of the existing item or display an error message
                 console.log('Item is already in the cart');
+                this.showFailAlert();
             } else {
                 // Use the addToCart action to commit the item to the store
                 this.addToCart(product);
+                this.showSuccessAlert();
             }
         },
         removeFromCart(product) {
@@ -69,6 +76,12 @@ export default {
         storeArray() {
             // Store the array in the Vuex store
             this.setProducts(this.products);
+        },
+        showFailAlert() {
+            this.$refs.alert.showAlert();
+        },
+        showSuccessAlert() {
+            this.$refs.success.showAlert();
         }
     },
     created() {
@@ -79,6 +92,10 @@ export default {
     computed: {
         // Use the items getter from the cart store to get the items in the cart
         ...mapGetters(['items'])
+    },
+    components: {
+        FailAlert,
+        SuccessAlert
     }
 }
 </script>
