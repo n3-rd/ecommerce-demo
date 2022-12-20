@@ -1,101 +1,103 @@
 <template>
-    <div>
-        <FailAlert ref="alert" message="Item is already in the cart" />
-        <SuccessAlert ref="success" message="Item added to cart" />
-
+    <div class="flex flex-col">
         <div class="py-6 px-4 text-black">
+            <div class="grid grid-cols-4 gap-4">
+                <div class="relative h-96" v-for="product in products" :key="product.id">
+                    <img class="w-full h-48 object-contain" :src="product.image" alt="product image" />
 
-            <div class="products-grid grid grid-cols-4 ">
-                <div class="product-item relative h-96 " v-for="product in products" :key="product.id">
-                    <img class=" w-full h-48 object-contain" :src="product.image" alt="product image">
-
-                    <div class=" flex flex-col justify-center items-center">
-                        <h3 class="text-[1.3rem] text-center font-bold py-3 product-name">{{ product.title }}</h3>
+                    <div class="flex flex-col justify-center items-center p-4">
+                        <h3 class="text-xl font-bold text-center product-name ">{{ product.title.substring(0, 20)
+                        }}...</h3>
                         <p class="text-lg font-black product-price">${{ (parseFloat(Math.floor((product.price * 1.022) *
                                 100) / 100).toFixed(2))
                         }}</p>
                         <div>{{ product.category }}</div>
                         <button type="button" @click="addItemToCart(product)"
-                            class="inline-block px-6 py-2.5 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">Add
-                            to Cart</button>
-
+                            class="inline-block py-2.5 px-6 bg-gray-800 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-gray-900 hover:shadow-lg focus:bg-gray-900 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-900 active:shadow-lg transition duration-150 ease-in-out">
+                            Add to Cart
+                        </button>
                     </div>
                 </div>
             </div>
-
-
         </div>
-
     </div>
 </template>
 
 
 <script>
-import axios from 'axios';
-import { mapActions, mapGetters } from 'vuex'
-import FailAlert from './failAlert.vue';
-import SuccessAlert from './successAlert.vue';
+import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
+import { useStore } from 'vuex'
+import { useNotification } from "@kyvg/vue3-notification";
 
 export default {
-    data() {
-        return {
-            products: [],
-            cart: [],
-            showPrompt: false
-        }
-    },
-    methods: {
-        async getProducts() {
+    setup() {
+        const products = ref([])
+
+        const store = useStore()
+        const { notify } = useNotification()
+
+        const getProducts = async () => {
             try {
-                const response = await axios.get('https://fakestoreapi.com/products');
-                this.products = response.data;
-                this.storeArray()
+                const response = await axios.get('https://fakestoreapi.com/products')
+                products.value = response.data
+                store.dispatch('setProducts', products.value)
             } catch (error) {
-                console.error(error);
+                showFailAlert("Failed to fetch prducts.")
+
             }
-        },
-        addItemToCart(product) {
-            // Check if the item is already in the cart
-            let itemInCart = this.items.find(item => item.id === product.id);
+        }
+
+        const addItemToCart = product => {
+            const itemInCart = store.getters.items.find(item => item.id === product.id)
 
             if (itemInCart) {
-                // Update the quantity of the existing item or display an error message
-                console.log('Item is already in the cart');
-                this.showFailAlert();
-            } else {
-                // Use the addToCart action to commit the item to the store
-                this.addToCart(product);
-                this.showSuccessAlert();
+                console.log('Item is already in the cart')
+                showFailAlert("Product already exists inside the cart.")
+            } else if (!itemInCart) {
+                store.dispatch('addToCart', product)
+                showSuccessAlert("Product added to cart.")
             }
-        },
-        removeFromCart(product) {
-            // Use the removeFromCart action to remove the item from the store
-            this.removeFromCart(product)
-        },
-        ...mapActions(['setProducts', 'addToCart', 'removeFromCart']),
-        storeArray() {
-            // Store the array in the Vuex store
-            this.setProducts(this.products);
-        },
-        showFailAlert() {
-            this.$refs.alert.showAlert();
-        },
-        showSuccessAlert() {
-            this.$refs.success.showAlert();
+            else {
+                showFailAlert("Sorry, an error occurs from our side while adding your product to the cart, we are currently working on it, Kindly try again.")
+            }
+
+        }
+
+        const removeFromCart = product => {
+            store.dispatch('removeFromCart', product)
+        }
+
+        const showFailAlert = (text) => {
+            notify({
+                title: "Error!",
+                text: text,
+                type: "error",
+            });
+        }
+
+        const showSuccessAlert = (text) => {
+            notify({
+                title: "Success!",
+                text: text,
+                type: "success",
+            });
+        }
+
+        onMounted(() => {
+            getProducts()
+        })
+
+        const items = computed(() => store.getters.items)
+
+        return {
+            products,
+            addItemToCart,
+            removeFromCart,
+            showFailAlert,
+            showSuccessAlert,
+            items
         }
     },
-    created() {
-        this.getProducts();
-        // export the products array
-
-    },
-    computed: {
-        // Use the items getter from the cart store to get the items in the cart
-        ...mapGetters(['items'])
-    },
-    components: {
-        FailAlert,
-        SuccessAlert
-    }
 }
 </script>

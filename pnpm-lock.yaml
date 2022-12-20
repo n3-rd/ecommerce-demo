@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@kyvg/vue3-notification': ^2.7.0
   '@vitejs/plugin-vue': ^4.0.0
   autoprefixer: ^10.4.13
   axios: ^1.2.1
@@ -11,6 +12,7 @@ specifiers:
   vuex: ^4.0.2
 
 dependencies:
+  '@kyvg/vue3-notification': 2.7.0_vue@3.2.45
   axios: 1.2.1
   vue: 3.2.45
   vuex: 4.0.2_vue@3.2.45
@@ -244,6 +246,14 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@kyvg/vue3-notification/2.7.0_vue@3.2.45:
+    resolution: {integrity: sha512-Eti6jRGips9fpf2WdRjlOOJGyjCZ35qt84CeTeFr5piAwXaMpvgzea4dqqTK5KCfqK3qz/zwwxAd/8AToLYL8A==}
+    peerDependencies:
+      vue: ^3.0.0
+    dependencies:
+      vue: 3.2.45
+    dev: false
 
   /@nodelib/fs.scandir/2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}

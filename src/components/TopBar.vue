@@ -22,7 +22,8 @@
             </div>
         </div>
 
-        <div class="cart-sidebar w-[30%] h-screen fixed inset-y-0 right-0 bg-white z-[999] hidden">
+        <div class="cart-sidebar w-[30%] h-screen fixed inset-y-0 right-0 bg-white z-[999] hidden
+        transition-all ease-in-out duration-300">
 
             <!-- add a close button -->
             <div class="flex justify-end pt-4">

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h2 class="text-3xl py-2 font-black">Cart</h2>
 
         <div class="h-full shadow-md bg-white px-1 absolute w-full overflow-y-auto no-scrollbar">
             Total: ${{ cartTotal }}
@@ -10,7 +11,9 @@
                     <img :src="item.image" alt="Thumbnail" class="w-12 h-12 rounded-full">
                     <div class="flex-1 ml-4">
                         <p class="text-gray-700 font-bold text-lg">{{ item.title }}</p>
-                        <p class="text-gray-500 text-sm">${{ item.price }}</p>
+                        <p class="text-gray-500 text-sm">${{ (parseFloat(Math.floor((item.price * 1.022) *
+                                100) / 100).toFixed(2))
+                        }}</p>
                     </div>
                     <button class="text-gray-500 hover:text-red-500 focus:outline-none"
                         @click="removeFromCart(item.id)">

@@ -20,17 +20,17 @@ const actions = {
         commit('removeFromCart', item)
     }
 }
-
 const getters = {
     items: state => state.items,
     cartTotal: state => {
         let total = 0
         state.items.forEach(item => {
-            total += item.price
+            total += item.price * 1.022
         })
-        return total
+        return parseFloat(total.toFixed(2))
     },
 }
+
 
 export default {
     state,
