@@ -24,10 +24,7 @@
 
         <div class="cart-sidebar w-[30%] h-screen fixed inset-y-0 right-0 bg-white z-[999] hidden
         transition-all ease-in-out duration-300">
-
-            <!-- add a close button -->
             <div class="flex justify-end pt-4">
-                <!-- <button class="text-white text-2xl font-bold p-4 cursor-pointer" @click="toggleCartMenu">X</button> -->
                 <button class="text-gray-500 hover:text-red-500 focus:outline-none px-4" @click="toggleCartMenu">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">

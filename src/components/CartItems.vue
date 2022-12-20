@@ -52,10 +52,7 @@ export default {
 }
 
 .no-scrollbar {
-    /* Hide scrollbar for Internet Explorer and Edge */
     -ms-overflow-style: none;
-
-    /* Hide scrollbar for Firefox */
     scrollbar-width: none;
 }
 </style>
