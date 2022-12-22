@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col">
         <div class="py-6 px-4 text-black">
-            <div class="grid grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="relative h-96" v-for="product in products" :key="product.id">
                     <img class="w-full h-48 object-contain" :src="product.image" alt="product image" />
 
