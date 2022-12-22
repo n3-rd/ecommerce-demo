@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="cart-sidebar w-60% md:w-[30%] h-screen fixed inset-y-0 right-0 bg-white z-[999] hidden
+        <div class="cart-sidebar w-[60%] md:w-[30%] h-screen fixed inset-y-0 right-0 bg-white z-[999] hidden
         transition-all ease-in-out duration-300">
             <div class="flex justify-end pt-4">
                 <button class="text-gray-500 hover:text-red-500 focus:outline-none px-4" @click="toggleCartMenu">
